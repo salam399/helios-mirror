@@ -24,7 +24,7 @@ page = """
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Torrent File Selector</title>
-    <link rel="icon" href="https://telegra.ph/file/cc06d0c613491080cc174.png" type="image/jpg">
+    <link rel="icon" href="https://graph.org/file/cc06d0c613491080cc174.png" type="image/jpg">
     <script
       src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
       integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs="
@@ -211,13 +211,21 @@ input[type="submit"]:hover, input[type="submit"]:focus{
   z-index: 10000;
 }
 </style>
+<script>
+function s_validate() {
+    if ($("input[name^='filenode_']:checked").length == 0) {
+        alert("Select one file at least!");
+        return false;
+        }
+    }
+</script>
 </head>
 <body>
   <!--© Designed and coded by @bipuldey19-Telegram-->
     <header>
       <div class="brand">
         <img
-          src="https://telegra.ph/file/cc06d0c613491080cc174.png"
+          src="https://graph.org/file/cc06d0c613491080cc174.png"
           alt="logo"
         />
         <a href="https://t.me/anas_tayyar">
@@ -413,7 +421,7 @@ code_page = """
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Torrent Code Checker</title>
-    <link rel="icon" href="https://telegra.ph/file/cc06d0c613491080cc174.png" type="image/jpg">
+    <link rel="icon" href="https://graph.org/file/cc06d0c613491080cc174.png" type="image/jpg">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -609,7 +617,7 @@ section span{
     <header>
       <div class="brand">
         <img
-          src="https://telegra.ph/file/cc06d0c613491080cc174.png"
+          src="https://graph.org/file/cc06d0c613491080cc174.png"
           alt="logo"
         />
         <a href="https://t.me/anas_tayyar">

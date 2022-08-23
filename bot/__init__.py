@@ -56,15 +56,15 @@ try:
 except:
     SERVER_PORT = 80
 
-PORT = environ.get('PORT', SERVER_PORT)
-Popen([f"gunicorn web.wserver:app --bind 0.0.0.0:{PORT}"], shell=True)
+Popen(f"gunicorn web.wserver:app --bind 0.0.0.0:{SERVER_PORT}", shell=True)
 srun(["qbittorrent-nox", "-d", "--profile=."])
 if not ospath.exists('.netrc'):
     srun(["touch", ".netrc"])
 srun(["cp", ".netrc", "/root/.netrc"])
 srun(["chmod", "600", ".netrc"])
 srun(["chmod", "+x", "aria.sh"])
-srun(["./aria.sh"], shell=True)
+srun("./aria.sh", shell=True)
+sleep(0.5)
 
 Interval = []
 DRIVES_NAMES = []
@@ -171,13 +171,24 @@ LOGGER.info("Generating BOT_SESSION_STRING")
 app = Client(name='pyrogram', api_id=int(TELEGRAM_API), api_hash=TELEGRAM_HASH, bot_token=BOT_TOKEN, parse_mode=enums.ParseMode.HTML, no_updates=True)
 
 try:
+    RSS_USER_SESSION_STRING = getConfig('RSS_USER_SESSION_STRING')
+    if len(RSS_USER_SESSION_STRING) == 0:
+        raise KeyError
+    rss_session = Client(name='rss_session', api_id=int(TELEGRAM_API), api_hash=TELEGRAM_HASH,
+                         session_string=RSS_USER_SESSION_STRING, parse_mode=enums.ParseMode.HTML, no_updates=True)
+except:
+    RSS_USER_SESSION_STRING = None
+    rss_session = None
+
+try:
     USER_SESSION_STRING = getConfig('USER_SESSION_STRING')
     if len(USER_SESSION_STRING) == 0:
         raise KeyError
-    rss_session = Client(name='rss_session', api_id=int(TELEGRAM_API), api_hash=TELEGRAM_HASH, session_string=USER_SESSION_STRING, parse_mode=enums.ParseMode.HTML, no_updates=True)
+
+    app_session = Client(name='app_session', api_id=int(TELEGRAM_API), api_hash=TELEGRAM_HASH, session_string=USER_SESSION_STRING, parse_mode=enums.ParseMode.HTML, no_updates=True)
 except:
     USER_SESSION_STRING = None
-    rss_session = None
+    app_session = None
 
 def aria2c_init():
     try:
@@ -235,13 +246,26 @@ try:
         raise KeyError
 except:
     DB_URI = None
-try:
-    TG_SPLIT_SIZE = getConfig('TG_SPLIT_SIZE')
-    if len(TG_SPLIT_SIZE) == 0 or int(TG_SPLIT_SIZE) > 2097151000:
-        raise KeyError
-    TG_SPLIT_SIZE = int(TG_SPLIT_SIZE)
-except:
-    TG_SPLIT_SIZE = 2097151000
+if USER_SESSION_STRING:
+    try:
+        with app_session:
+            user = app_session.get_me()
+            try:
+                if user.is_premium:
+                    MAX_LEECH_SIZE = 4194304000
+                    LOGGER.info("User is Premium Max Leech Size is 4 GB")
+                else:
+                    MAX_LEECH_SIZE = 2097152000
+                    LOGGER.info("User is not Premium Max Leech Size is 2 GB")
+            except Exception as e:
+             MAX_LEECH_SIZE = 2097152000
+             LOGGER.info(f"{e} Max Leech Size is 2 GB")
+    except Exception as e:
+        MAX_LEECH_SIZE = 2097152000
+        LOGGER.info(f"{e} Max Leech Size is 2 GB")
+else:
+    MAX_LEECH_SIZE = 2097152000
+    LOGGER.info(f"User Session String Was not provided Skipping Premium acc verification.")
 try:
     STATUS_LIMIT = getConfig('STATUS_LIMIT')
     if len(STATUS_LIMIT) == 0:
@@ -368,6 +392,25 @@ try:
 except:
     BUTTON_SIX_NAME = None
     BUTTON_SIX_URL = None
+    
+try:
+    START_BTN1_NAME = getConfig('START_BTN1_NAME')
+    START_BTN1_URL = getConfig('START_BTN1_URL')
+    if len(START_BTN1_NAME) == 0 or len(START_BTN1_URL) == 0:
+        raise KeyError
+except:
+    START_BTN1_NAME = 'Repo'
+    START_BTN1_URL = 'https://github.com/arshsisodiya/helios-mirror'
+    
+try:
+    START_BTN2_NAME = getConfig('START_BTN2_NAME')
+    START_BTN2_URL = getConfig('START_BTN2_URL')
+    if len(START_BTN2_NAME) == 0 or len(START_BTN2_URL) == 0:
+        raise KeyError
+except:
+    START_BTN2_NAME = 'Support Group'
+    START_BTN2_URL = 'https://t.me/mirrorsociety'
+    
 try:
     INCOMPLETE_TASK_NOTIFIER = getConfig('INCOMPLETE_TASK_NOTIFIER')
     INCOMPLETE_TASK_NOTIFIER = INCOMPLETE_TASK_NOTIFIER.lower() == 'true'

@@ -17,6 +17,7 @@ This is a Telegram Bot written in Python for mirroring files on the Internet to 
 - Engine stats in status
 - Statistics button in status
 - Heroku Dyno info in stats
+- 4 GB upload for Premium users
 - And many more little changes can't remember
 
 ## From Other Repositories
@@ -150,11 +151,10 @@ Fill up rest of the fields. Meaning of each field is discussed below:
 
 ### Leech
 - `LEECH_LOG`: - Chat id of channel/group where leeched files will be uploaded, **NOTE:** only put 1 channel/group id starts with -100xxxxxxxxx, ***NOTE*** add bot in that channel/group as Admin, if you leave this empty bot will sent leech files in current chat.
-- `TG_SPLIT_SIZE`: Size of split in bytes. Default is `2GB`.
 - `AS_DOCUMENT`: Default type of Telegram file upload. Default is `False` mean as media. `Bool`
-- `EQUAL_SPLITS`: Split files larger than **TG_SPLIT_SIZE** into equal parts size (Not working with zip cmd). Default is `False`. `Bool`
+- `EQUAL_SPLITS`: Split files larger than **MAX_LEECH_SIZE** into equal parts size (Not working with zip cmd). Default is `False`. `Bool`
 - `CUSTOM_FILENAME`: Add custom word to leeched file name.
-
+- `USER_SESSION_STRING`: For TG premium users to Upload More than 2 GB files on Telegram.
 ### Telegraph ui
 - `TITLE_NAME`: Title name for Telegraph pages (while using /list command)
 - `AUTHOR_NAME`: = Author name for Telegraph pages
@@ -171,7 +171,7 @@ Fill up rest of the fields. Meaning of each field is discussed below:
 - `RSS_DELAY`: Time in seconds for rss refresh interval. Recommended `900` second at least. Default is `900` in sec.
 - `RSS_COMMAND`: Choose command for the desired action.
 - `RSS_CHAT_ID`: Chat ID where rss links will be sent. If using channel then add channel id.
-- `USER_SESSION_STRING`: To send rss links from your telegram account instead of adding bot to channel then linking the channel to group to get rss link since bot will not read command from itself or other bot. To generate session string use this command `python3 generate_string_session.py` after mounting repo folder for sure.
+- `RSS_USER_SESSION_STRING`: To send rss links from your telegram account instead of adding bot to channel then linking the channel to group to get rss link since bot will not read command from itself or other bot. To generate session string use this command `python3 generate_string_session.py` after mounting repo folder for sure.
   - **RSS NOTE**: `DATABASE_URL` and `RSS_CHAT_ID` is required, otherwise all rss commands will not work. You must use bot in group. You can add the bot to a channel and add link this channel to group so messages sent by bot to channel will be forwarded to group without using `USER_STRING_SESSION`.
 
 ### Private Files
@@ -208,7 +208,11 @@ Fill up rest of the fields. Meaning of each field is discussed below:
 ### Buttons
 - `SOURCE_LINK`: -  set it `True` if you want to get Source Link of Mirrored/Cloned file,  Default is `False`.
 - `VIEW_LINK`: View Link button to open file Index Link in browser instead of direct download link, you can figure out if it's compatible with your Index code or not, open any video from you Index and check if its URL ends with `?a=view`, if yes make it `True`, compatible with [BhadooIndex](https://gitlab.com/ParveenBhadooOfficial/Google-Drive-Index) Code. Default is `False`. `Bool`
-
+- Two buttons that will show when using /start command, if you don't understand it leave it empty.
+  - `START_BTN1_NAME`:
+  - `START_BTN1_URL`:
+  - `START_BTN2_NAME`:
+  - `START_BTN2_URL`:
 - Three buttons are already added including Drive Link, Index Link, and View Link, you can add extra buttons, if you don't know what are the below entries, simply leave them empty.
   - `BUTTON_FOUR_NAME`:
   - `BUTTON_FOUR_URL`:
@@ -230,7 +234,7 @@ Fill up rest of the fields. Meaning of each field is discussed below:
 
 **NOTES**
 - Old authentication changed, now we can't use bot or replit to generate token.pickle. You need OS with a browser.
-- Windows users should install python3 and pip. You can find how to install and use them from google or from this [telegraph](https://telegra.ph/Create-Telegram-Mirror-Leech-Bot-by-Deploying-App-with-Heroku-Branch-using-Github-Workflow-12-06) from [Wiszky](https://github.com/vishnoe115) tutorial.
+- Windows users should install python3 and pip. You can find how to install and use them from google or from this [telegraph](https://graph.org/Create-Telegram-Mirror-Leech-Bot-by-Deploying-App-with-Heroku-Branch-using-Github-Workflow-12-06) from [Wiszky](https://github.com/vishnoe115) tutorial.
 - You can ONLY open the generated link from `generate_drive_token.py` in local browser.
 
 1. Visit the [Google Cloud Console](https://console.developers.google.com/apis/credentials)

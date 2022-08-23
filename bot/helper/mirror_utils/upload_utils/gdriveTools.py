@@ -74,19 +74,19 @@ class GoogleDriveHelper:
         """
         try:
             return self.uploaded_bytes / self.total_time
-        except ZeroDivisionError:
+        except:
             return 0
 
     def dspeed(self):
         try:
             return self.downloaded_bytes / self.dtotal_time
-        except ZeroDivisionError:
+        except:
             return 0
 
     def cspeed(self):
         try:
             return self.transferred_size / int(time() - self.start_time)
-        except ZeroDivisionError:
+        except:
             return 0
 
     @staticmethod
@@ -679,7 +679,7 @@ class GoogleDriveHelper:
 
         msg = f"<b>Found {contents_count} result for <i>{fileName}</i></b>"
         buttons = ButtonMaker()
-        buttons.buildbutton("🔎 VIEW", f"https://telegra.ph/{path[0]}")
+        buttons.buildbutton("🔎 VIEW", f"https://graph.org/{path[0]}")
 
         return msg, InlineKeyboardMarkup(buttons.build_menu(1))
 
